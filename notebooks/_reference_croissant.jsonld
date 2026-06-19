@@ -1,0 +1,141 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "field": "cr:field",
+    "fileObject": "cr:fileObject",
+    "recordSet": "cr:recordSet",
+    "source": "cr:source"
+  },
+  "@type": "cr:Dataset",
+  "name": "ProteinInteractionAdapter",
+  "description": "BioCypher adapter that reads a synthetic OmniPath/pypath-style protein-protein interaction TSV and yields Protein nodes and typed interaction edges (activation, binding, inhibition, phosphorylation, ubiquitination) in BioCypher tuple format.",
+  "version": "0.1.0",
+  "license": "MIT",
+  "codeRepository": "https://github.com/ecarrenolozano/BCWorkshop-Tutorial-Knowledge-Graph",
+  "creator": {
+    "@type": "Person",
+    "name": "June Sachov"
+  },
+  "keywords": [
+    "protein-protein interaction",
+    "BioCypher",
+    "knowledge graph",
+    "OmniPath",
+    "UniProt"
+  ],
+  "hasPart": [
+    {
+      "@type": "cr:Dataset",
+      "name": "synthetic_protein_interactions",
+      "description": "Synthetic interaction table. Each row is one interaction between two proteins identified by UniProt accession.",
+      "version": "0.1.0",
+      "license": "MIT",
+      "url": "https://omnipathdb.org/",
+      "distribution": [
+        {
+          "@type": "cr:FileObject",
+          "@id": "ppi-tsv",
+          "name": "synthetic_protein_interactions.tsv",
+          "contentUrl": "https://zenodo.org/records/16902349/files/synthetic_protein_interactions.tsv",
+          "encodingFormat": "text/tab-separated-values"
+        }
+      ],
+      "recordSet": [
+        {
+          "@type": "cr:RecordSet",
+          "name": "interactions",
+          "description": "One record per interaction row; source/target become Protein nodes, remaining columns become edge properties.",
+          "field": [
+            {
+              "@type": "cr:Field",
+              "name": "source",
+              "dataType": "Text",
+              "description": "UniProt accession of source protein -> Protein node id."
+            },
+            {
+              "@type": "cr:Field",
+              "name": "target",
+              "dataType": "Text",
+              "description": "UniProt accession of target protein -> Protein node id."
+            },
+            {
+              "@type": "cr:Field",
+              "name": "source_genesymbol",
+              "dataType": "Text",
+              "description": "Gene symbol of source -> Protein.genesymbol."
+            },
+            {
+              "@type": "cr:Field",
+              "name": "target_genesymbol",
+              "dataType": "Text",
+              "description": "Gene symbol of target -> Protein.genesymbol."
+            },
+            {
+              "@type": "cr:Field",
+              "name": "ncbi_tax_id_source",
+              "dataType": "Text",
+              "description": "NCBI taxon id of source -> Protein.ncbi_tax_id."
+            },
+            {
+              "@type": "cr:Field",
+              "name": "entity_type_source",
+              "dataType": "Text",
+              "description": "Entity type of source -> Protein.entity_type."
+            },
+            {
+              "@type": "cr:Field",
+              "name": "type",
+              "dataType": "Text",
+              "description": "Interaction type -> EDGE LABEL (activation|binding|inhibition|phosphorylation|ubiquitination)."
+            },
+            {
+              "@type": "cr:Field",
+              "name": "is_directed",
+              "dataType": "Boolean",
+              "description": "Edge property: interaction is directed."
+            },
+            {
+              "@type": "cr:Field",
+              "name": "is_stimulation",
+              "dataType": "Boolean",
+              "description": "Edge property: interaction is stimulatory."
+            },
+            {
+              "@type": "cr:Field",
+              "name": "is_inhibition",
+              "dataType": "Boolean",
+              "description": "Edge property: interaction is inhibitory."
+            },
+            {
+              "@type": "cr:Field",
+              "name": "consensus_direction",
+              "dataType": "Boolean",
+              "description": "Edge property: consensus on direction."
+            },
+            {
+              "@type": "cr:Field",
+              "name": "consensus_stimulation",
+              "dataType": "Boolean",
+              "description": "Edge property: consensus on stimulation."
+            },
+            {
+              "@type": "cr:Field",
+              "name": "consensus_inhibition",
+              "dataType": "Boolean",
+              "description": "Edge property: consensus on inhibition."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

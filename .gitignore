@@ -139,3 +139,6 @@ output/
 data/
 *.db
 *.sqlite
+
+# macOS
+.DS_Store
