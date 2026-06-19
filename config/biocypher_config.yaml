@@ -34,6 +34,5 @@ neo4j:
   # Hint: Open Neo4j Desktop → Overview tab → copy the instance path shown
   #       (e.g. /home/user/neo4j-instance/) and append /bin/ to it.
   # ────────────────────────────────────────────────────────────────────────
-  # ---------- YOUR CODE STARTS HERE ----------
-  # import_call_bin_prefix: /path/to/your/neo4j-instance/bin/
-  # ---------- YOUR CODE ENDS HERE ----------
+  import_call_bin_prefix: /Users/lunona/Library/Application Support/neo4j-desktop/Application/Data/dbmss/dbms-9c3017e0-5678-4bb8-b132-f2b198b4f38d/bin/
+  

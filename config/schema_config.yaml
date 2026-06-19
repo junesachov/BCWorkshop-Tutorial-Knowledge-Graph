@@ -16,7 +16,10 @@ protein:
     #                 genesymbol: str
     # ────────────────────────────────────────────────────────────────────────
     # ---------- YOUR CODE STARTS HERE ----------
-
+    properties:
+        genesymbol: str
+        ncbi_tax_id: str
+        entity_type: str
     # ---------- YOUR CODE ENDS HERE ----------
 
     
@@ -57,9 +60,28 @@ activation:
 #       phosphorylation, ubiquitination.
 # ─────────────────────────────────────────────────────────────────────────────
 # ---------- YOUR CODE STARTS HERE ----------
+binding:
+    is_a: protein protein interaction
+    inherit_properties: true
+    represented_as: edge
+    input_label: binding
 
+inhibition:
+    is_a: protein protein interaction
+    inherit_properties: true
+    represented_as: edge
+    input_label: inhibition
 
+phosphorylation:
+    is_a: protein protein interaction
+    inherit_properties: true
+    represented_as: edge
+    input_label: phosphorylation
 
-
+ubiquitination:
+    is_a: protein protein interaction
+    inherit_properties: true
+    represented_as: edge
+    input_label: ubiquitination
 # ---------- YOUR CODE ENDS HERE ----------
 

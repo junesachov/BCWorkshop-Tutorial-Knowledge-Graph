@@ -97,7 +97,17 @@ class ProteinInteractionAdapter:
         #          {"genesymbol": ..., "ncbi_tax_id": str(...), "entity_type": ...})
         # ─────────────────────────────────────────────────────────────────────
         # ---------- YOUR CODE STARTS HERE ----------
-
+        # we write loop that gives us one tuple per prot
+        for _, row in proteins_df.iterrows():
+            yield (
+                str(row["node_id"]),  #node_id
+                "uniprot_protein",   #node_label <- must match schema input_label
+                {
+                    "genesymbol": row["genesymbol"],
+                    "ncbi_tax_id": str(row["ncbi_tax_id"]),
+                    "entity_type": row["entity_type"],
+                },
+            )
         # ---------- YOUR CODE ENDS HERE ----------
 
         
@@ -121,7 +131,12 @@ class ProteinInteractionAdapter:
         # Hint: Use pd.read_csv(self.data_source, sep="\t").
         # ─────────────────────────────────────────────────────────────────────
         # ---------- YOUR CODE STARTS HERE ----------
+        df = pd.read_csv(self.data_source, sep="\t")
 
+        flag_cols = [
+            "is_directed", "is_stimulation", "is_inhibition",
+            "consensus_direction", "consensus_stimulation", "consensus_inhibition",
+        ]
         # ---------- YOUR CODE ENDS HERE ----------
 
         # ── TODO 5b ──────────────────────────────────────────────────────────
@@ -134,7 +149,16 @@ class ProteinInteractionAdapter:
         #         interaction_type = str(row["type"])
         # ─────────────────────────────────────────────────────────────────────
         # ---------- YOUR CODE STARTS HERE ----------
-
+        for _, row in df.iterrows():
+            source_id = str(row["source"])
+            target_id = str(row["target"])
+            interaction_type = str(row["type"])
+            
+            # ── 5e guard: skip rows missing essentials ──
+            if not source_id or not target_id or not interaction_type:
+                continue
+            if interaction_type in ("nan", "None", ""):
+                continue
         # ---------- YOUR CODE ENDS HERE ----------
 
         # ── TODO 5c ──────────────────────────────────────────────────────────
@@ -143,7 +167,7 @@ class ProteinInteractionAdapter:
         # Hint: Use f"{source_id}_{target_id}_{interaction_type}".
         # ─────────────────────────────────────────────────────────────────────
         # ---------- YOUR CODE STARTS HERE ----------
-
+            edge_id = f"{source_id}_{target_id}_{interaction_type}"
         # ---------- YOUR CODE ENDS HERE ----------
 
         # ── TODO 5d ──────────────────────────────────────────────────────────
@@ -156,6 +180,16 @@ class ProteinInteractionAdapter:
         #         consensus_inhibition
         # ─────────────────────────────────────────────────────────────────────
         # ---------- YOUR CODE STARTS HERE ----------
+            properties = {col: bool(int(row[col])) for col in flag_cols}
+            #--OR--
+            #properties = {
+                #"is_directed": bool(int(row["is_directed"])),
+                #"is_stimulation": bool(int(row["is_stimulation"])),
+                #"is_inhibition": bool(int(row["is_inhibition"])),
+                #"consensus_direction": bool(int(row["consensus_direction"])),
+                #"consensus_stimulation": bool(int(row["consensus_stimulation"])),
+                #"consensus_inhibition": bool(int(row["consensus_inhibition"])),
+            #}
 
         # ---------- YOUR CODE ENDS HERE ----------
 
@@ -167,7 +201,7 @@ class ProteinInteractionAdapter:
         #       where source, target, or type is missing.
         # ─────────────────────────────────────────────────────────────────────
         # ---------- YOUR CODE STARTS HERE ----------
-
+            yield (edge_id, source_id, target_id, interaction_type, properties)
         # ---------- YOUR CODE ENDS HERE ----------
 
     
